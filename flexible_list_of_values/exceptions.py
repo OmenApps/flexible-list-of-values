@@ -1,0 +1,2 @@
+class ModelClassParsingError(Exception):
+    pass
