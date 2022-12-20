@@ -290,6 +290,24 @@ Here, Users for TenantA who are filling out a Contact form will see all required
     <code>related_query_name</code> for the related entity instance.<br>
     <em>Default</em>: <code>"%(app_label)s_%(class)ss"</code>
   </dd>
+
+  <dt>lov_selections_model</dt>
+  <dd>
+    Specifies the model class of the through-model between an Entity and a Value. Each instance of this through-model is an option that the tenant's users can choose from. Must be a concrete subclass of AbstractLOVSelection. Must either be an actual model class (e.g.: <code>TenantSubjectLOVSelection</code>) or the string representation of the model class (e.g.: <code>"entities.TenantSubjectLOVSelection"</code>).<br>
+    <em>* Required</em>
+  </dd>
+
+  <dt>lov_associated_entities_related_name</dt>
+  <dd>
+    <code>related_name</code> for the M2M to the entity instance.<br>
+    <em>Default</em>: <code>"%(app_label)s_%(class)s_selections"</code>
+  </dd>
+
+  <dt>lov_associated_entities_related_query_name</dt>
+  <dd>
+    <code>related_query_name</code> for the M2M to the entity instance.<br>
+    <em>Default</em>: <code>"%(app_label)s_%(class)ss_selected"</code>
+  </dd>
 </dl>
 
 #### Manager and QuerySet Methods
