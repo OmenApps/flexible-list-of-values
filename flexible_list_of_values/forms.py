@@ -1,7 +1,9 @@
 import logging
 
 from django.forms import ModelForm
+from django.forms.widgets import HiddenInput
 
+from . import LOVValueType
 from .exceptions import NoEntityProvidedFromViewError
 
 
