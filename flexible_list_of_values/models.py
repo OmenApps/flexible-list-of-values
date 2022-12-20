@@ -330,7 +330,7 @@ class AbstractLOVValue(models.Model, metaclass=LOVValueModelBase):
         """
         Soft-delete options to prevent referencing an option that no longer exists
         """
-        if self.value_type == OptionType.CUSTOM or override:
+        if self.value_type == LOVValueType.CUSTOM or override:
             self.deleted = timezone.now()
             self.save()
 
