@@ -52,7 +52,7 @@ class LOVEntityModelBase(ModelBase):
         return model
 
 
-class LOVValueModelBase(EntityModelBase):
+class LOVValueModelBase(LOVEntityModelBase):
     """
     Models extending EntityAndValueModelBase get a ForeignKey to the model class specified in lov_entity_model
         and a ManyToManyField to the model specified in lov_value_model
@@ -126,7 +126,7 @@ class LOVValueModelBase(EntityModelBase):
 
 
 
-class LOVSelectionModelBase(EntityModelBase):
+class LOVSelectionModelBase(LOVEntityModelBase):
     """
     Models extending EntityAndValueModelBase get a ForeignKey to the model class specified in lov_entity_model
         and a ManyToManyField to the model specified in lov_value_model
