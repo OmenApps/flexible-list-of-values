@@ -1,7 +1,6 @@
 import logging
 
 from django.apps import apps
-from django.core.exceptions import FieldDoesNotExist
 from django.db import models
 from django.db.models import Q
 from django.db.models.base import ModelBase
@@ -27,14 +26,6 @@ class LOVEntityModelBase(ModelBase):
                 ConcreteLOVModel = model
 
                 if not ConcreteLOVModel._meta.abstract and ConcreteLOVModel.lov_entity_model is not None:
-                    # if isinstance(ConcreteLOVModel.lov_entity_model, str):
-                    #     # Parse string representation of the target entity model class
-                    #     try:
-                    #         app_label, model_name = ConcreteLOVModel.lov_entity_model.split(".")
-                    #     except ValueError as e:
-                    #         raise ModelClassParsingError(e)
-                    #     ConcreteLOVModel.lov_entity_model = apps.get_model(app_label, model_name, require_ready=False)
-
                     ConcreteLOVModel.add_to_class(
                         "lov_entity",
                         models.ForeignKey(
@@ -91,26 +82,6 @@ class LOVValueModelBase(LOVEntityModelBase):
                     and ConcreteLOVValueModel.lov_selections_model is not None
                     and ConcreteLOVValueModel.lov_entity_model is not None
                 ):
-                    # if isinstance(ConcreteLOVValueModel.lov_selections_model, str):
-                    #     # Parse string representation of the target selection model class
-                    #     try:
-                    #         app_label, model_name = ConcreteLOVValueModel.lov_selections_model.split(".")
-                    #     except ValueError as e:
-                    #         raise ModelClassParsingError(e)
-                    #     ConcreteLOVValueModel.lov_selections_model = apps.get_model(
-                    #         app_label, model_name, require_ready=False
-                    #     )
-
-                    if isinstance(ConcreteLOVValueModel.lov_entity_model, str):
-                        # Parse string representation of the target entity model class
-                        try:
-                            app_label, model_name = ConcreteLOVValueModel.lov_entity_model.split(".")
-                        except ValueError as e:
-                            raise ModelClassParsingError(e)
-                        ConcreteLOVValueModel.lov_entity_model = apps.get_model(
-                            app_label, model_name, require_ready=False
-                        )
-
                     ConcreteLOVValueModel.add_to_class(
                         "lov_associated_entities",
                         models.ManyToManyField(
@@ -165,16 +136,6 @@ class LOVSelectionModelBase(LOVEntityModelBase):
                     not ConcreteLOVSelectionModel._meta.abstract
                     and ConcreteLOVSelectionModel.lov_value_model is not None
                 ):
-                    # if isinstance(ConcreteLOVSelectionModel.lov_value_model, str):
-                    #     # Parse string representation of the target entity model class
-                    #     try:
-                    #         app_label, model_name = ConcreteLOVSelectionModel.lov_value_model.split(".")
-                    #     except ValueError as e:
-                    #         raise ModelClassParsingError(e)
-                    #     ConcreteLOVSelectionModel.lov_value_model = apps.get_model(
-                    #         app_label, model_name, require_ready=False
-                    #     )
-
                     ConcreteLOVSelectionModel.add_to_class(
                         "lov_value",
                         models.ForeignKey(
