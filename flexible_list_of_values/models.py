@@ -16,7 +16,7 @@ from .exceptions import ModelClassParsingError, IncorrectSubclassError
 
 class LOVEntityModelBase(ModelBase):
     """
-    Models extending EntityModelBase get a ForeignKey to the model class specified in lov_entity_model
+    Models extending LOVEntityModelBase get a ForeignKey to the model class specified in lov_entity_model
     """
 
     def __new__(cls, name, bases, attrs, **kwargs):
@@ -27,13 +27,13 @@ class LOVEntityModelBase(ModelBase):
                 ConcreteLOVModel = model
 
                 if not ConcreteLOVModel._meta.abstract and ConcreteLOVModel.lov_entity_model is not None:
-                    if isinstance(ConcreteLOVModel.lov_entity_model, str):
-                        # Parse string representation of the target entity model class
-                        try:
-                            app_label, model_name = ConcreteLOVModel.lov_entity_model.split(".")
-                        except ValueError as e:
-                            raise ModelClassParsingError(e)
-                        ConcreteLOVModel.lov_entity_model = apps.get_model(app_label, model_name, require_ready=False)
+                    # if isinstance(ConcreteLOVModel.lov_entity_model, str):
+                    #     # Parse string representation of the target entity model class
+                    #     try:
+                    #         app_label, model_name = ConcreteLOVModel.lov_entity_model.split(".")
+                    #     except ValueError as e:
+                    #         raise ModelClassParsingError(e)
+                    #     ConcreteLOVModel.lov_entity_model = apps.get_model(app_label, model_name, require_ready=False)
 
                     ConcreteLOVModel.add_to_class(
                         "lov_entity",
@@ -91,15 +91,15 @@ class LOVValueModelBase(LOVEntityModelBase):
                     and ConcreteLOVValueModel.lov_selections_model is not None
                     and ConcreteLOVValueModel.lov_entity_model is not None
                 ):
-                    if isinstance(ConcreteLOVValueModel.lov_selections_model, str):
-                        # Parse string representation of the target selection model class
-                        try:
-                            app_label, model_name = ConcreteLOVValueModel.lov_selections_model.split(".")
-                        except ValueError as e:
-                            raise ModelClassParsingError(e)
-                        ConcreteLOVValueModel.lov_selections_model = apps.get_model(
-                            app_label, model_name, require_ready=False
-                        )
+                    # if isinstance(ConcreteLOVValueModel.lov_selections_model, str):
+                    #     # Parse string representation of the target selection model class
+                    #     try:
+                    #         app_label, model_name = ConcreteLOVValueModel.lov_selections_model.split(".")
+                    #     except ValueError as e:
+                    #         raise ModelClassParsingError(e)
+                    #     ConcreteLOVValueModel.lov_selections_model = apps.get_model(
+                    #         app_label, model_name, require_ready=False
+                    #     )
 
                     if isinstance(ConcreteLOVValueModel.lov_entity_model, str):
                         # Parse string representation of the target entity model class
@@ -111,16 +111,16 @@ class LOVValueModelBase(LOVEntityModelBase):
                             app_label, model_name, require_ready=False
                         )
 
-                    # ConcreteLOVValueModel.add_to_class(
-                    #     "lov_associated_entities",
-                    #     models.ManyToManyField(
-                    #         ConcreteLOVValueModel.lov_entity_model,
-                    #         through=ConcreteLOVValueModel.lov_selections_model,
-                    #         through_fields=("lov_value", "lov_entity"),
-                    #         related_name=ConcreteLOVValueModel.lov_associated_entities_related_name,  # "selected"
-                    #         related_query_name=ConcreteLOVValueModel.lov_associated_entities_related_query_name,
-                    #     ),
-                    # )
+                    ConcreteLOVValueModel.add_to_class(
+                        "lov_associated_entities",
+                        models.ManyToManyField(
+                            ConcreteLOVValueModel.lov_entity_model,
+                            through=ConcreteLOVValueModel.lov_selections_model,
+                            through_fields=("lov_value", "lov_entity"),
+                            related_name=ConcreteLOVValueModel.lov_associated_entities_related_name,  # "selected"
+                            related_query_name=ConcreteLOVValueModel.lov_associated_entities_related_query_name,
+                        ),
+                    )
                 else:
                     raise IncorrectSubclassError(
                         "lov_value_model must be specified for concrete subclasses of AbstractLOVValue"
@@ -165,15 +165,15 @@ class LOVSelectionModelBase(LOVEntityModelBase):
                     not ConcreteLOVSelectionModel._meta.abstract
                     and ConcreteLOVSelectionModel.lov_value_model is not None
                 ):
-                    if isinstance(ConcreteLOVSelectionModel.lov_value_model, str):
-                        # Parse string representation of the target entity model class
-                        try:
-                            app_label, model_name = ConcreteLOVSelectionModel.lov_value_model.split(".")
-                        except ValueError as e:
-                            raise ModelClassParsingError(e)
-                        ConcreteLOVSelectionModel.lov_value_model = apps.get_model(
-                            app_label, model_name, require_ready=False
-                        )
+                    # if isinstance(ConcreteLOVSelectionModel.lov_value_model, str):
+                    #     # Parse string representation of the target entity model class
+                    #     try:
+                    #         app_label, model_name = ConcreteLOVSelectionModel.lov_value_model.split(".")
+                    #     except ValueError as e:
+                    #         raise ModelClassParsingError(e)
+                    #     ConcreteLOVSelectionModel.lov_value_model = apps.get_model(
+                    #         app_label, model_name, require_ready=False
+                    #     )
 
                     ConcreteLOVSelectionModel.add_to_class(
                         "lov_value",
