@@ -111,16 +111,16 @@ class LOVValueModelBase(LOVEntityModelBase):
                             app_label, model_name, require_ready=False
                         )
 
-                    ConcreteLOVValueModel.add_to_class(
-                        "lov_associated_entities",
-                        models.ManyToManyField(
-                            ConcreteLOVValueModel.lov_entity_model,
-                            through=ConcreteLOVValueModel.lov_selections_model,
-                            through_fields=("lov_value", "lov_entity"),
-                            related_name=ConcreteLOVValueModel.lov_associated_entities_related_name,  # "selected"
-                            related_query_name=ConcreteLOVValueModel.lov_associated_entities_related_query_name,
-                        ),
-                    )
+                    # ConcreteLOVValueModel.add_to_class(
+                    #     "lov_associated_entities",
+                    #     models.ManyToManyField(
+                    #         ConcreteLOVValueModel.lov_entity_model,
+                    #         through=ConcreteLOVValueModel.lov_selections_model,
+                    #         through_fields=("lov_value", "lov_entity"),
+                    #         related_name=ConcreteLOVValueModel.lov_associated_entities_related_name,  # "selected"
+                    #         related_query_name=ConcreteLOVValueModel.lov_associated_entities_related_query_name,
+                    #     ),
+                    # )
                 else:
                     raise IncorrectSubclassError(
                         "lov_value_model must be specified for concrete subclasses of AbstractLOVValue"
