@@ -77,6 +77,7 @@ class TenantSubjectLOVValue(AbstractLOVValue):
     """
 
     lov_entity_model = Tenant
+    lov_selections_model = "entities.TenantSubjectLOVSelection"
 
     # Default MANDATORY and OPTIONAL values
     lov_defaults = {
