@@ -364,9 +364,22 @@ class LOVSelectionManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset()
 
-    def for_entity(self, entity):
+    def values_for_entity(self, entity):
         """
-        Returns all selected values for a given entity, including:
+        Returns a QuerySet of the AbstractLOVValue subclassed model with all *available*
+          values for a given entity, including:
+          
+        - all required default values
+        - all non-required default values
+        - all entity-specific values
+        """
+        return self.model.lov_value.rel.model.objects.for_entity(entity=entity)
+
+    def selections_for_entity(self, entity):
+        """
+        Returns a QuerySet of the AbstractLOVValue subclassed model with all *selected*
+          values for a given entity, including:
+          
         - all required default values
         - all selected non-required default values
         - all selected entity-specific values
