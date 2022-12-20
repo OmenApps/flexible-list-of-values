@@ -47,7 +47,9 @@ class LOVEntityModelBase(ModelBase):
                         ),
                     )
                 else:
-                    raise IncorrectSubclassError("lov_value_model must be specified for concrete subclasses of AbstractLOVSelection")
+                    raise IncorrectSubclassError(
+                        "lov_value_model must be specified for concrete subclasses of AbstractLOVSelection"
+                    )
 
         return model
 
@@ -120,10 +122,11 @@ class LOVValueModelBase(LOVEntityModelBase):
                         ),
                     )
                 else:
-                    raise IncorrectSubclassError("lov_value_model must be specified for concrete subclasses of AbstractLOVValue")
+                    raise IncorrectSubclassError(
+                        "lov_value_model must be specified for concrete subclasses of AbstractLOVValue"
+                    )
 
         return model
-
 
 
 class LOVSelectionModelBase(LOVEntityModelBase):
@@ -184,7 +187,9 @@ class LOVSelectionModelBase(LOVEntityModelBase):
                         ),
                     )
                 else:
-                    raise IncorrectSubclassError("lov_value_model must be specified for concrete subclasses of AbstractLOVValue")
+                    raise IncorrectSubclassError(
+                        "lov_value_model must be specified for concrete subclasses of AbstractLOVValue"
+                    )
 
         return model
 
@@ -340,7 +345,7 @@ class AbstractLOVValue(models.Model, metaclass=LOVValueModelBase):
     @classmethod
     def get_concrete_subclasses(cls):
         """
-        Return a list of model classes which are subclassed from AbstractLOVValue and 
+        Return a list of model classes which are subclassed from AbstractLOVValue and
             are not themselves Abstract
         """
         result = []
@@ -368,7 +373,7 @@ class LOVSelectionManager(models.Manager):
         """
         Returns a QuerySet of the AbstractLOVValue subclassed model with all *available*
           values for a given entity, including:
-          
+
         - all required default values
         - all non-required default values
         - all entity-specific values
@@ -379,7 +384,7 @@ class LOVSelectionManager(models.Manager):
         """
         Returns a QuerySet of the AbstractLOVValue subclassed model with all *selected*
           values for a given entity, including:
-          
+
         - all required default values
         - all selected non-required default values
         - all selected entity-specific values
@@ -432,5 +437,3 @@ class AbstractLOVSelection(models.Model, metaclass=LOVSelectionModelBase):
             ),
         ]
         abstract = True
-
-

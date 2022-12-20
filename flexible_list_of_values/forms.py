@@ -1,6 +1,6 @@
 import logging
 
-from django.forms import ModelForm
+from django import forms
 from django.forms.widgets import HiddenInput
 
 from . import LOVValueType
@@ -16,7 +16,7 @@ class EntityValueCreateFormMixin:
     """
     Used in forms that allow an entity to create a new custom value.
 
-    It requires an `lov_entity` argument to be passed from the view. This should be an instance of the model 
+    It requires an `lov_entity` argument to be passed from the view. This should be an instance of the model
       class provided in the lov_entity_model parameter of the concrete LOVValueModel.
 
     Usage:
@@ -35,13 +35,12 @@ class EntityValueCreateFormMixin:
         if not self.lov_entity:
             raise NoEntityProvidedFromViewError("No lov_entity model class was provided to the form from the view")
         super().__init__(*args, **kwargs)
-        
+
         # Set the value_type field value to LOVValueType.CUSTOM and use a HiddenInput widget
-        self.fields['value_type'].widget = HiddenInput()
-        self.fields['value_type'].initial = LOVValueType.CUSTOM
-        
+        self.fields["value_type"].widget = HiddenInput()
+        self.fields["value_type"].initial = LOVValueType.CUSTOM
+
         # Set the lov_entity field value to the entity instance provided from the view
         #   and use a HiddenInput widget
-        self.fields['lov_entity'].widget = HiddenInput()
-        self.fields['lov_entity'].initial = self.lov_entity
-
+        self.fields["lov_entity"].widget = HiddenInput()
+        self.fields["lov_entity"].initial = self.lov_entity
