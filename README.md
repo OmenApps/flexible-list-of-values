@@ -76,7 +76,7 @@ class TenantSubjectLOVValue(AbstractLOVValue):
     Concrete implementation of AbstractLOVValue with Subject options that a Tenant can select from.
     """
 
-    lov_entity_model = Tenant
+    lov_entity_model = "entities.Tenant"  # Use appname.ModelName
     lov_selections_model = "entities.TenantSubjectLOVSelection"
 
     # Default MANDATORY and OPTIONAL values
@@ -97,8 +97,8 @@ class TenantSubjectLOVSelection(AbstractLOVSelection):
     Concrete implementation of AbstractLOVSelection with actual selections of Subjects for each Tenant
     """
 
-    lov_value_model = TenantSubjectLOVValue  # You can use the actual class model
-    lov_entity_model = "entities.Tenant"  # Or you can specify as "app.ModelName"
+    lov_value_model = "entities.TenantSubjectLOVValue"  # Use appname.ModelName
+    lov_entity_model = "entities.Tenant"
 
     class Meta:
         verbose_name = "Subject Selection"
@@ -228,7 +228,7 @@ class ContactForm(forms.Form):
     
     class Meta:
         model = Contact
-        fields = ['__all__']
+        fields = "__all__"
 
     def __init__(self, *args, **kwargs):
         self.lov_entity = kwargs.pop("lov_entity", None)
@@ -279,7 +279,7 @@ Here, Users for TenantA who are filling out a Contact form will see all required
 
   <dt>lov_entity_model</dt>
   <dd>
-    Specifies the model class for the 'entity' in your project which can customize its Users' LOVs. Must either be an actual model class (<code>Entity</code>) or the string representation of the model class (<code>"entities.Entity"</code>).<br>
+    Specifies the model class for the 'entity' in your project which can customize its Users' LOVs. Specify the string representation of the model class (e.g.: <code>"entities.Entity"</code>).<br>
     <em>* Required</em>
   </dd>
 
@@ -303,7 +303,7 @@ Here, Users for TenantA who are filling out a Contact form will see all required
 
   <dt>lov_selections_model</dt>
   <dd>
-    Specifies the model class of the through-model between an Entity and a Value. Each instance of this through-model is an option that the tenant's users can choose from. Must be a concrete subclass of AbstractLOVSelection. Must either be an actual model class (e.g.: <code>TenantSubjectLOVSelection</code>) or the string representation of the model class (e.g.: <code>"entities.TenantSubjectLOVSelection"</code>).<br>
+    Specifies the model class of the through-model between an Entity and a Value. Each instance of this through-model is an option that the tenant's users can choose from. Must be a concrete subclass of AbstractLOVSelection. Specify the string representation of the model class (e.g.: <code>"entities.TenantSubjectLOVSelection"</code>).<br>
     <em>* Required</em>
   </dd>
 
@@ -365,7 +365,7 @@ This is a through-model from an concrete LOVValue model instance to an entity mo
 <dl>
   <dt>lov_entity_model</dt>
   <dd>
-    Specifies the model class for the 'entity' in your project which can customize its Users' LOVs. Must either be an actual model class (<code>Entity</code>) or the string representation of the model class (<code>"entities.Entity"</code>).<br>
+    Specifies the model class for the 'entity' in your project which can customize its Users' LOVs. Specify the string representation of the model class (e.g.: <code>"entities.Entity"</code>).<br>
     <em>* Required</em>
   </dd>
 
@@ -390,7 +390,7 @@ This is a through-model from an concrete LOVValue model instance to an entity mo
 
   <dt>lov_value_model</dt>
   <dd>
-    Specifies the model class for the concrete (not abstract!) subclass of AbstractLOVValue. Must either be an actual model class (<code>TenantSubjectLOVSelection</code>) or the string representation of the model class (<code>"contacts.TenantSubjectLOVSelection"</code>).<br>
+    Specifies the model class for the concrete (not abstract!) subclass of AbstractLOVValue. Specify the string representation of the model class (e.g.: <code>"contacts.TenantSubjectLOVSelection"</code>).<br>
     <em>* Required</em>
   </dd>
 

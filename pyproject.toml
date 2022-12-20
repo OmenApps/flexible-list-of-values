@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flexible-list-of-values"
-version = "0.1.1"
+version = "0.1.2"
 description = "Flexible Lists of Values (LOV) for Django"
 authors = ["Jack Linke <jack@watervize.com>"]
 license = "MIT"
