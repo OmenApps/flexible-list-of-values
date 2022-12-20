@@ -118,6 +118,12 @@ View the available Values for this Tenant:
 ```python
 tenant = Tenant.objects.first()
 values_for_tenant = TenantSubjectLOVValue.objects.for_entity(tenant)
+```
+
+View the selected Values for this Tenant:
+
+```python
+tenant = Tenant.objects.first()
 values_for_tenant = TenantSubjectLOVValue.objects.for_entity(tenant)
 ```
 
@@ -193,7 +199,7 @@ class TenantValueSelectionForm(forms.ModelForm):
         self.lov_entity = kwargs.pop("lov_entity", None)
         super().__init__(*args, **kwargs)
 
-        self.fields["subject"] = forms.ModelMultipleChoiceField(queryset=ConcreteLOVSelection.objects.for_entity(self.lov_entity))
+        self.fields["subject"].queryset = ConcreteLOVSelection.objects.values_for_entity(self.lov_entity)
 
 
 class selection_view(request):
@@ -217,16 +223,20 @@ class Contact(models.Model):
     body = models.TextField()
 
 
-class ContactForm(forms.ModelForm):
+class ContactForm(forms.Form):
+    forms.ModelChoiceField(queryset=None)
+    
     class Meta:
         model = Contact
         fields = ['__all__']
 
     def __init__(self, *args, **kwargs):
         self.lov_entity = kwargs.pop("lov_entity", None)
+        if not self.lov_entity:
+            raise NoEntityProvidedFromViewError("No lov_entity model class was provided to the form from the view")
         super().__init__(*args, **kwargs)
 
-        self.fields["subject"] = forms.ModelChoiceField(queryset=ConcreteLOVSelection.objects.for_entity(self.lov_entity))
+        self.fields["subject"].queryset = ConcreteLOVSelection.objects.selections_for_entity(entity=self.lov_entity)
 
 
 class contact_view(request):
@@ -400,9 +410,19 @@ This is a through-model from an concrete LOVValue model instance to an entity mo
 #### Manager and QuerySet Methods
 
 <dl>
-  <dt>for_entity(entity)</dt>
+  <dt>values_for_entity(entity)</dt>
   <dd>
-    Returns QuerySet of all selected values for a given entity, including:<br>
+    Returns QuerySet of all <em>available</em> values for a given entity, including:<br>
+    <ul>
+        <li>all required default values</li>
+        <li>all non-required default values</li>
+        <li>all entity-specific values for this entity</li>
+    </ul>
+  </dd>
+  
+  <dt>selections_for_entity(entity)</dt>
+  <dd>
+    Returns QuerySet of all <em>selected</em> values for a given entity, including:<br>
     <ul>
         <li>all required default values</li>
         <li>all selected non-required default values</li>
