@@ -279,6 +279,7 @@ class AbstractLOVValue(models.Model, metaclass=LOVValueModelBase):
 
     CombinedLOVValueManager = LOVValueManager.from_queryset(LOVValueQuerySet)
     objects = CombinedLOVValueManager()
+    unscoped = models.Manager()
 
     class Meta:
         verbose_name = _("List of Values Option")
@@ -386,6 +387,7 @@ class AbstractLOVSelection(models.Model, metaclass=LOVSelectionModelBase):
 
     CombinedLOVSelectionManager = LOVSelectionManager.from_queryset(LOVSelectionQuerySet)
     objects = CombinedLOVSelectionManager()
+    unscoped = models.Manager()
 
     class Meta:
         verbose_name = _("List of Values Selection")
