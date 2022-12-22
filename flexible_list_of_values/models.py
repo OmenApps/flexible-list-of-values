@@ -206,18 +206,24 @@ class LOVValueManager(models.Manager):
           if you need to modify how subclassed concrete instances are created.
         """
 
+        value_type = LOVValueType.MANDATORY
+
         # If value_type key is present, validate that it is LOVValueType.MANDATORY or LOVValueType.OPTIONAL
         #    LOVValueType.CUSTOM cannot be used in defaults
         for key, value in item_values_dict.items():
-            if key == "value_type" and not (value == LOVValueType.MANDATORY or value == LOVValueType.OPTIONAL):
-                raise Exception(
-                    f"LOVValue defaults must be of type `LOVValueType.MANDATORY` or `LOVValueType.OPTIONAL`. "
-                    f"For {item_name} you specified {key} = {value}."
-                )
+            if key == "value_type":
+                value_type = value
+                if not (value == LOVValueType.MANDATORY or value == LOVValueType.OPTIONAL):
+                    raise Exception(
+                        f"LOVValue defaults must be of type `LOVValueType.MANDATORY` or `LOVValueType.OPTIONAL`. "
+                        f"For {item_name} you specified {key} = {value}."
+                    )
 
         obj, created = self.model.objects.update_or_create(
             name=item_name,
-            defaults=item_values_dict,
+            value_type=value_type,
+            # defaults=item_values_dict,  # ToDo: Add options as needed
+            defaults=None,
         )
 
     def _import_defaults(self):
