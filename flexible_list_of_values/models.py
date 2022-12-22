@@ -208,7 +208,7 @@ class LOVValueManager(models.Manager):
 
         # If value_type key is present, validate that it is LOVValueType.MANDATORY or LOVValueType.OPTIONAL
         #    LOVValueType.CUSTOM cannot be used in defaults
-        for key, value in item_values_dict().items():
+        for key, value in item_values_dict.items():
             if key == "value_type" and not (value == LOVValueType.MANDATORY or value == LOVValueType.OPTIONAL):
                 raise Exception(
                     f"LOVValue defaults must be of type `LOVValueType.MANDATORY` or `LOVValueType.OPTIONAL`. "
