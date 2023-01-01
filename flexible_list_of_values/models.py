@@ -160,12 +160,6 @@ class LOVValueQuerySet(models.QuerySet):
     Custom QuerySet for LOVValue models
     """
 
-    def all(self):
-        return self.none()
-
-    def delete(self):
-        return self.none()
-
     def for_entity(self, entity):
         """
         Returns all available values for a given entity, including:
