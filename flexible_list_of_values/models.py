@@ -285,10 +285,19 @@ class AbstractLOVValue(models.Model, metaclass=LOVValueModelBase):
         verbose_name = _("List of Values Option")
         verbose_name_plural = _("List of Values Options")
         constraints = [
+            # A particular entity cannot have more than one value with the same name
             UniqueConstraint(
-                Lower("name").desc(),
+                Lower("name"),
                 "lov_entity",
                 name="%(app_label)s_%(class)s_name_val",
+            ),
+            # Values of type LOVValueType.CUSTOM must have a specified entity
+            # Values of type LOVValueType.MANDATORY and LOVValueType.OPTIONAL must not have a specified entity
+            CheckConstraint(
+                check=Q(value_type=LOVValueType.CUSTOM, lov_entity__isnull=False)
+                | Q(value_type=LOVValueType.MANDATORY, lov_entity__isnull=True)
+                | Q(value_type=LOVValueType.OPTIONAL, lov_entity__isnull=True),
+                name="%(app_label)s_%(class)s_no_mandatory_entity",
             ),
         ]
         abstract = True
