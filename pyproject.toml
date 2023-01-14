@@ -25,8 +25,17 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
+django = ">=3.2"
 
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+black = {version = ">=22.1.0", allow-prereleases = true}
+pytest = "^7"
+django-extensions = "^3"
+werkzeug = "^2"
 
 [build-system]
 requires = ["poetry-core"]
