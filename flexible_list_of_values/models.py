@@ -349,32 +349,48 @@ class LOVSelectionManager(models.Manager):
         - all non-required default values
         - all entity-specific values
         """
-        return self.model.lov_value.rel.model.objects.for_entity(entity=entity)
+        try:
+            ValuesModel = apps.get_model(self.model.lov_value_model)
+            return ValuesModel.objects.for_entity(entity=entity)
+        except LookupError:
+            # no such model in this application
+            return None
 
-    def selections_for_entity(self, entity):
+    def selected_values_for_entity(self, entity):
         """
         Returns a QuerySet of the AbstractLOVValue subclassed model with all *selected*
           values for a given entity, including:
 
-        - all required default values
-        - all selected non-required default values
-        - all selected entity-specific values
+        - all mandatory default values
+        - all entity-selected optional default values
+        - all entity-selected custom values
         """
-        optional = {
-            "value_type": LOVValueType.OPTIONAL,
-            self.model.lov_value.rel.related_query_name + "__lov_entity": entity,
-        }
-        print(f"optional: {optional}")
 
-        custom = {
-            "value_type": LOVValueType.CUSTOM,
-            self.model.lov_value.rel.related_query_name + "__lov_entity": entity,
-        }
-        print(f"custom: {custom}")
+        try:
+            ValuesModel = apps.get_model(self.model.lov_value_model)
 
-        return self.model.lov_value.rel.model.objects.filter(
-            Q(value_type=LOVValueType.MANDATORY) | Q(**optional) | Q(**custom)
-        )
+            # Return all Mandatory LOVValue instances
+            mandatory = {
+                "value_type": LOVValueType.MANDATORY,
+            }
+
+            # For LOVSelections that are Optional and belong to our entity, return the associated LOVValue instances
+            optional = {
+                "value_type": LOVValueType.OPTIONAL,
+                "lov_associated_entities": entity,
+            }
+
+            # For LOVSelections that are Custom and belong to our entity, return the associated LOVValue instances
+            custom = {
+                "value_type": LOVValueType.CUSTOM,
+                "lov_associated_entities": entity,
+            }
+
+            return ValuesModel.objects.filter(Q(**mandatory) | Q(**optional) | Q(**custom))
+
+        except LookupError:
+            # no such model in this application
+            return None
 
 
 class AbstractLOVSelection(models.Model, metaclass=LOVSelectionModelBase):
