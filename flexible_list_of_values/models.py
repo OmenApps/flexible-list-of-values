@@ -1,5 +1,3 @@
-import logging
-
 from django.apps import apps
 from django.db import models
 from django.db.models import Q
@@ -10,7 +8,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from . import LOVValueType
-from .exceptions import ModelClassParsingError, IncorrectSubclassError
+from .exceptions import IncorrectSubclassError
 
 
 class LOVEntityModelBase(ModelBase):
@@ -48,7 +46,7 @@ class LOVEntityModelBase(ModelBase):
 class LOVValueModelBase(LOVEntityModelBase):
     """
     Models extending EntityAndValueModelBase get a ForeignKey to the model class specified in lov_entity_model
-        and a ManyToManyField to the model specified in lov_value_model
+        (inherited from LOVEntityModelBase), and a ManyToManyField to the model specified in lov_value_model
 
     Used to set up the ManyToManyField from concrete classes of AbstractLOVSelection
         to concrete classes of AbstractLOVValue.
@@ -103,7 +101,7 @@ class LOVValueModelBase(LOVEntityModelBase):
 class LOVSelectionModelBase(LOVEntityModelBase):
     """
     Models extending EntityAndValueModelBase get a ForeignKey to the model class specified in lov_entity_model
-        and a ManyToManyField to the model specified in lov_value_model
+        (inherited from LOVEntityModelBase), and a ManyToManyField to the model specified in lov_value_model
 
     Used to set up the ManyToManyField from concrete classes of AbstractLOVSelection
         to concrete classes of AbstractLOVValue.
@@ -228,7 +226,7 @@ class LOVValueManager(models.Manager):
         Example:
             lov_defaults = {
                 "Cereal_and_Grass": {"value_type": LOVValueType.MANDATORY},              # Creates a mandatory instance
-                "Cereal_and_Grass__Alfalfa_Hay": {},                                      # Creates a mandatory instance
+                "Cereal_and_Grass__Alfalfa_Hay": {},                                     # Creates a mandatory instance
                 "Cereal_and_Grass__Alfalfa_Seed": {"value_type": LOVValueType.OPTIONAL}, # Creates an optional instance
             }
 
@@ -266,7 +264,7 @@ class AbstractLOVValue(models.Model, metaclass=LOVValueModelBase):
         _("Option Type"),
         choices=LOVValueType.choices,
         default=LOVValueType.OPTIONAL,
-        max_length=10,
+        max_length=3,
         blank=True,
     )
 
