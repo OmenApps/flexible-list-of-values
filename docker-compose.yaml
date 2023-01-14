@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    image: flexible_list_of_values_django
+    container_name: django
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./compose/django/.django
+    ports:
+      - "8000:8000"
+    command: /start

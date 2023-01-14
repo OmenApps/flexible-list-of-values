@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <title>Testapp for Flexible List of Values</title>
+    <meta name="description" content="Our first page">
+    <meta name="keywords" content="html tutorial template">
+</head>
+<body>
+    {% block content %}
+    <p>
+        <em>Assumes you have run migrations and created a superuser.</em>
+    </p>
+    
+    1. Run <b><code>python manage.py update_lovs</code></b> to update the default LOV Values in the project to the database.<br>
+    2. Optionally create another user or two in <b><a href="{% url 'admin:index' %}">admin</a></b>.<br>
+    3. Create at least one tenant, setting the owner and users fields. The tenant owner can create new LOV Values and choose which Values its Users can select from. If the user account you are logged in with is a tenant owner, then <b><a href="{% url 'lov_crop_value_create_view' %}">click here</a></b> to add new LOV Values, and <b><a href="{% url 'lov_tenant_crop_selection_view' %}">click here</a></b> to determine which Values your users can choose from.<br>
+    4. If the user account you are logged in with belongs to a tenant, then <b><a href="{% url 'lov_user_crop_selection_view' %}">click here</a></b> to choose from among the LOV Value choices the tenant has made available to you.<br>
+    
+    {% endblock content %}
+</body>
+</html>
