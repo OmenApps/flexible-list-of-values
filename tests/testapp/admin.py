@@ -10,7 +10,7 @@ class TenantAdmin(admin.ModelAdmin):
 
 @admin.register(TenantCropLOVSelection)
 class TenantCropLOVSelectionAdmin(admin.ModelAdmin):
-    list_display = ["lov_value", "lov_entity"]
+    list_display = ["lov_value", "lov_tenant"]
 
 
 @admin.register(TenantCropLOVValue)

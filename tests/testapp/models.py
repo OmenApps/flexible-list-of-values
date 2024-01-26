@@ -30,7 +30,7 @@ class TenantCropLOVValue(AbstractLOVValue):
         to the Tenants as optional recommendations. Tenants can also add their own custom Values.
     """
 
-    lov_entity_model = "testapp.Tenant"
+    lov_tenant_model = "testapp.Tenant"
     lov_selections_model = "testapp.TenantCropLOVSelection"
 
     lov_defaults = {
@@ -71,7 +71,7 @@ class TenantCropLOVSelection(AbstractLOVSelection):
     """
 
     lov_value_model = "testapp.TenantCropLOVValue"
-    lov_entity_model = "testapp.Tenant"
+    lov_tenant_model = "testapp.Tenant"
 
     class Meta(AbstractLOVSelection.Meta):
         verbose_name = "Tenant Crop Selection"

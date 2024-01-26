@@ -15,7 +15,7 @@ class TenantCropValueCreateForm(LOVValueCreateFormMixin, forms.ModelForm):
 
     class Meta:
         model = TenantCropLOVValue
-        fields = ["name", "lov_entity", "value_type"]
+        fields = ["name", "lov_tenant", "value_type"]
 
 
 class TenantCropValueSelectionForm(LOVSelectionsModelForm):
@@ -45,7 +45,7 @@ class UserCropSelectionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Get all allowed values for this tenant
         if self.instance:
-            self.fields["crops"].queryset = TenantCropLOVSelection.objects.selected_values_for_entity(
+            self.fields["crops"].queryset = TenantCropLOVSelection.objects.selected_values_for_tenant(
                 self.instance.tenant
             )
             self.fields["user"].initial = self.user

@@ -25,12 +25,12 @@ def lov_crop_value_create_view(request):
     template = "testapp/create_value.html"
     context = {}
 
-    # However you specify the current entity/tenant for the User submitting this form.
+    # However you specify the current tenant associated with the User submitting this form.
     # This is only an example.
     tenant = request.user.owned_tenants.first()
 
-    # Here we provide the User's entity, which the form will use to determine the available Values
-    form = TenantCropValueCreateForm(request.POST or None, lov_entity=tenant)
+    # Here we provide the User's tenant, which the form will use to determine the available Values
+    form = TenantCropValueCreateForm(request.POST or None, lov_tenant=tenant)
 
     if request.method == "POST":
         if form.is_valid():
@@ -39,7 +39,7 @@ def lov_crop_value_create_view(request):
     context["form"] = form
 
     # Provide the list of existing LOV Values for this Tenant
-    context["existing_values"] = TenantCropLOVValue.objects.for_entity(tenant)
+    context["existing_values"] = TenantCropLOVValue.objects.for_tenant(tenant)
 
     return TemplateResponse(request, template, context)
 
@@ -53,18 +53,18 @@ def lov_tenant_crop_selection_view(request):
     template = "testapp/select_values.html"
     context = {}
 
-    # However you specify the current entity/tenant for the User submitting this form.
+    # However you specify the current tenant associated with the User submitting this form.
     # This is only an example.
     tenant = request.user.owned_tenants.first()
 
-    # Here we provide the entity
-    form = TenantCropValueSelectionForm(request.POST or None, lov_entity=tenant)
+    # Here we provide the tenant
+    form = TenantCropValueSelectionForm(request.POST or None, lov_tenant=tenant)
 
     if request.method == "POST":
         if form.is_valid():
             form.save()
             # Update form's contents to ensure mandatory items are selected
-            form = TenantCropValueSelectionForm(None, lov_entity=tenant)
+            form = TenantCropValueSelectionForm(None, lov_tenant=tenant)
 
     context["form"] = form
 
@@ -80,7 +80,7 @@ def lov_user_crop_selection_view(request):
     template = "testapp/select_values.html"
     context = {}
 
-    # However you specify the current entity/tenant for the User submitting this form.
+    # However you specify the current tenant associated with the User submitting this form.
     # This is only an example.
     tenant = request.user.tenants.first()
 
@@ -89,7 +89,7 @@ def lov_user_crop_selection_view(request):
         tenant=tenant,
     )
 
-    # Here we provide the entity
+    # Here we provide the tenant
     form = UserCropSelectionForm(request.POST or None, instance=obj)
     if request.method == "POST":
         if form.is_valid():

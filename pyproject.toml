@@ -1,23 +1,26 @@
 [tool.poetry]
 name = "flexible-list-of-values"
-version = "0.2.0"
+version = "0.3.0b1"
 description = "Flexible Lists of Values (LOV) for Django"
 authors = ["Jack Linke <jack@watervize.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "flexible_list_of_values"}]
+packages = [{ include = "flexible_list_of_values" }]
 
 homepage = "https://github.com/jacklinke/flexible-list-of-values"
 repository = "https://github.com/jacklinke/flexible-list-of-values"
-keywords = ["django",]
+keywords = ["django"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 3 - Beta",
     "Environment :: Web Environment",
     "Framework :: Django",
     "Framework :: Django :: 3.2",
     "Framework :: Django :: 4",
     "Framework :: Django :: 4.0",
     "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5",
+    "Framework :: Django :: 5.0",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
@@ -25,14 +28,14 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 django = ">=3.2"
 
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-black = {version = ">=22.1.0", allow-prereleases = true}
+black = { version = ">=22.1.0", allow-prereleases = true }
 pytest = "^7"
 django-extensions = "^3"
 werkzeug = "^2"
@@ -40,3 +43,11 @@ werkzeug = "^2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target-version = ["py39", "py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
